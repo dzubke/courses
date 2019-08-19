@@ -30,27 +30,9 @@ from typing import Tuple
 from math import ceil, floor
 import time
 
-def karatsuba_multipy(x: int, y: int) -> int:
+def karatsuba_multiply(x: int, y: int) -> int:
     """
-    !!! This function currenlty doesn't run because it can't handle multiplication of digits of different size. This is problem for the call
-    of the cross term: cross_term = karatsuba_multipy(a+b, c+d) - ac - bd  because sometimes the sum c+d is greater than 9 which results in a
-    two digit number. This can be shown in the print statements below when multiplying 1234 and 5678. 
-
-    Inputed: 1234, 5678
-    Split: 12, 34, 56, 78
-    Inputed: 12, 56
-    Split: 1, 2, 5, 6
-    Inputed: 1, 5
-    Inputed: 2, 6
-    Inputed: 3, 11
-
-    When 3 and 11 are inputted the assert for the integers of the same length is failed. But when that assert is removed, the product doesn't work
-    because the function is not designed to handle multiplication of differnt number sizes. In fact, the fancy cross term subtraction trick
-    that this relies on only seems to work if the inputted numbers are the same length. All of this leaves me rather puzzled.... at the moment...
-    !!! 
-
-    
-    This function utilizes the Karatsuba algorithm for multiplication. It takes a similar approach as the simple_recursive_multiply function
+     This function utilizes the Karatsuba algorithm for multiplication. It takes a similar approach as the simple_recursive_multiply function
         but instead of computing the cross term (ac+bd) as two products it instead calculates them as (a + b)*(c + d) - ac - bd. This works 
         because additions require fewer computations than multiplications and the ac and bd terms must already be multiplied.
 
@@ -65,27 +47,37 @@ def karatsuba_multipy(x: int, y: int) -> int:
     ----------
     prod: an integer which is the product of x and y
 
+    Notes
+    ---------
+    Replacing the int_split method with the floor and modular divisions ( a = x // 10**(m2) & b = x % 10**(m2)) ) in this function was inspired by
+    this article - https://stackoverflow.com/questions/42324419/karatsuba-multiplication-implementation. Using a floor division and modulo operator
+    is a much simpler and cleaner way of doing things than string comprehensions. The SO article also helped me figure out how to handle the lengths
+    in the assignment of m and m2.
+
     """
-    print(f"Inputed: {x}, {y}")
-    assert len(str(x)) == len(str(y)), "The integers should have the same number of digits"
-    
-    n = len(str(x))
+    #print(f"Inputed: {x}, {y}")    #for debugging purposes
 
     # the base case
-    if n == 1:
+    if len(str(x)) == 1 or len(str(y)) == 1:
         return x * y
     
     # otherwise, split the integers into 
     else: 
        
-        a, b = int_split(x)
-        c, d = int_split(y)
-        print(f"Split: {a}, {b}, {c}, {d}")
-        ac = karatsuba_multipy(a, c)
-        bd = karatsuba_multipy(b, d)
-        cross_term = karatsuba_multipy(a+b, c+d) - ac - bd
+        m = max(len(str(x)),len(str(y)))
+        m2 = m // 2
+
+        a = x // 10**(m2)
+        b = x % 10**(m2)
+        c = y // 10**(m2)
+        d = y % 10**(m2)
+        
+        #print(f"Split: {a}, {b}, {c}, {d}")    #for debugging purposes
+        ac = karatsuba_multiply(a, c)
+        bd = karatsuba_multiply(b, d)
+        cross_term = karatsuba_multiply(a+b, c+d) - ac - bd
     
-        return 10**(2*ceil(n/2)) * ac + 10**ceil(n/2) * cross_term  + bd
+        return 10**(2*m2) * ac + 10**m2 * cross_term  + bd
 
 
 
@@ -113,7 +105,7 @@ def simple_recursive_multiply(x: int, y: int) -> int:
     m = len(str(y))
 
     # the base case
-    if n == 1 and m ==1:
+    if n == 1 or m ==1:
         return x * y
     
     elif n == 1 and m != 1:
@@ -188,18 +180,18 @@ if __name__ == "__main__":
     print(f"The simple recursive algorithm took {recur_time} seconds to run")
     print(f"The computed product was {simple_prod}")
 
-    assert karatsuba_multipy(12, 34) == 408, "Even number of digits with both integers of the same length"
-    print(karatsuba_multipy(1234, 5678))
-    # The karatsuba_multiply function isn't working for the assert statement below. 
-    assert karatsuba_multipy(1234, 5678) == 7006652, "Even number of digits with both integers of a longer length"
-    assert karatsuba_multipy(123, 456) == 56088, "Odd number of digits with both integers of the same length"
+    assert karatsuba_multiply(12, 34) == 408, "Even number of digits with both integers of the same length"
+    assert karatsuba_multiply(1234, 5678) == 7006652, "Even number of digits with both integers of a longer length"
+    assert karatsuba_multiply(123, 456) == 56088, "Odd number of digits with both integers of the same length"
 
     time3 = time.time()
-    karatsuba_prod = karatsuba_multipy(3141592653589793238462643383279502884197169399375105820974944592, 
+    karatsuba_prod = karatsuba_multiply(3141592653589793238462643383279502884197169399375105820974944592, 
                                     2718281828459045235360287471352662497757247093699959574966967627)
     time4 = time.time()
 
     karatsuba_time = time4-time3
 
-    print(f"The simple recursive algorithm took {karatsuba_time} seconds to run")
+    print(f"The Karatsuba algorithm took {karatsuba_time} seconds to run")
     print(f"The compute product was {karatsuba_prod}")
+
+    print(f"The Karatsuba algorithm was {recur_time//karatsuba_time} times faster")
