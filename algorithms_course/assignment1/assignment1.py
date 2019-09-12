@@ -1,5 +1,5 @@
 '''
-Assignment prompt
+Assignment 1 prompt
 
 In this programming assignment you will implement one or more of the integer multiplication algorithms described in lecture.
 

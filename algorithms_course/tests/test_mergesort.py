@@ -4,7 +4,7 @@
 
 import unittest
 import sys
-sys.path.insert(1, '/Users/dustin/CS/projects/algorithms_course/mergesort')
+sys.path.insert(1, '/Users/dustin/CS/projects/courses/algorithms_course/mergesort')
 
 from mergesort import split
 
