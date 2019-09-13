@@ -1,13 +1,15 @@
 # standard libraries 
-import sys 
+import sys, os
 
 # non-standard libraries
 import pytest
 
 # project libraries
-from naive_bayes.classifier import tokenize
+from src.naive_bayes.classifier import tokenize
 
-sys.path.insert(1, '/Users/dustin/CS/projects/courses/data_science_from_scratch/src/')
+# sys.path.insert(1, '/Users/dustin/CS/projects/courses/data_science_from_scratch/')
+
+
 
 class TestNaiveBayes():
 
