@@ -1,4 +1,7 @@
 # assignment3.py
+# I tried to implement the quicksort algorithm by creating a class object and perform operations on that object
+# however, I haven't yet figured out how to call the algorithm recursively on the class object so converted the code
+# in assignment3.py wihtout using the class object. 
 
 # standard libraries
 from typing import List

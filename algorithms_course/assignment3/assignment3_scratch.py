@@ -1,9 +1,10 @@
-# assignment3.py
+# assignment3_scratch.py
+# this code is identical to assignment3.py but includes print statements that I used to debug the code.
 
 # standard libraries
 from typing import List, Tuple
 from statistics import median
-from math import floor
+from math import ceil
 
 
 def quicksort(in_list: List, pivot_pick: str ='first') -> None:
@@ -28,16 +29,19 @@ def quicksort(in_list: List, pivot_pick: str ='first') -> None:
     """
     n = len(in_list)                    # lenght of input lists
 
-    comparison_total = quicksortHelper(in_list, 0, n, pivot_pick = pivot_pick)
+    comparison_count = quicksortHelper(in_list, 0, n, pivot_pick = pivot_pick)
 
-    return comparison_total
+    return comparison_count
 
 
 def quicksortHelper(in_list, l_index, r_index, pivot_pick = 'first'):
-    """A helper function for quicksort in which the resursive calls will be made.
     """
+    """
+    n = len(in_list)                    # lenght of input lists
 
-    comparison_count = 0
+ 
+
+    count = 0
     count_left = 0 
     count_right = 0
     
@@ -47,36 +51,45 @@ def quicksortHelper(in_list, l_index, r_index, pivot_pick = 'first'):
             pass                        # then set the pivot as the first element
 
         elif pivot_pick == 'last':          # if the pivot memthod is 'last'
+            print(f"right index: {r_index}")
             in_list = swap(in_list, l_index, r_index-1)            # then set the pivot as the last element
+            print(f"after last swap: {in_list}")
 
         elif pivot_pick =='median':                            # if the pivot choosing method is 'median-of-three'
             # the pivot will be the median of the first, middle, and last elements
-            median_index_org = floor( (r_index - 1 + l_index) /2)        # this calculates the index of the median element in the original list
+            median_index_org = ceil( (r_index - 1 - l_index) /2)        # this calculates the index of the median element in the original list
             median_pivot = median([in_list[l_index], in_list[ median_index_org ], in_list[ r_index-1 ] ] ) 
 
             # then swap whichever value was picked as the median-of-three with the first value in the array
             if median_pivot == in_list[l_index]:
                 pass        # don't do anything because the median is already in the l_index position
-
+                print(f"first value with index: {l_index}")
             elif median_pivot == in_list[ median_index_org ]:       # if the median in the original list was picked
                 in_list = swap(in_list, l_index, median_index_org)  # swap it with the first element
-
+                print(f"median value with index: {median_index_org}")
             elif median_pivot == in_list[ r_index-1 ]:              # if the last element of the list was picked
                 in_list = swap(in_list, l_index, r_index - 1 )      # swap it with the first element
+                print(f"last value with index: {r_index -1}")
 
         else:   # if pivot_pick is not equal to 'first', 'last', or 'median-of-three' raise the ValueError
             raise ValueError("invalid entry for pivot_pick argument. Valid entries are 1) 'first', 2) 'last', or 3) 'median'")
 
         pivot_index = partition(in_list, l_index, r_index)
-        comparison_count = r_index - l_index - 1
+        print(f"left in: {l_index}")
+        print(f"right in: {r_index}")
+        print(f"pivot in: {pivot_index}")
+        print(in_list)
+        count = r_index - l_index - 1
+        print(f"count is: {count}")
 
-        count_left = quicksortHelper(in_list, l_index, pivot_index, pivot_pick=pivot_pick)
-        count_right = quicksortHelper(in_list, pivot_index+1, r_index, pivot_pick=pivot_pick)
+        count_left = quicksortHelper(in_list, l_index, pivot_index, pivot_pick = pivot_pick)
+        count_right = quicksortHelper(in_list, pivot_index+1, r_index, pivot_pick = pivot_pick)
+    
 
-    comparison_total = comparison_count + count_left + count_right       # the number of comparisons done by the call of the quicksort algorithm
+    comparison_total = count + count_left + count_right       # the number of comparisons done by the call of the quicksort algorithm
 
+    
     return comparison_total
-
 
 
 def partition(in_list, l_index: int, r_index: int) -> int:
@@ -98,21 +111,23 @@ def partition(in_list, l_index: int, r_index: int) -> int:
         the actions of the method are performed on the QuickSort class object
 
     """
-
+    print("start partition sub-routine")
     pivot = in_list[l_index]  # the pivot
+    print(f"pivot value is: {pivot}")
 
     i = l_index + 1              # the i-th index that separates values less than (<i) and greater (>i) of the pivot
 
-    # print(f"i and r_index are: {i, r_index}")
-
     for j in range(i, r_index):
+        print(f"in_list[{j}] is: {in_list[j]}")
         
         if in_list[j] < pivot:     # if the j-th element is less than the pivot 
             in_list = swap(in_list, i, j)          # swap the i-th element with the j-th element since i is boundary index and the i-th element is greater than the pivot
             i += 1                   # increment i
-            # print("increment i")
+            print(f"i is: {i}")
+            print(in_list)
 
     in_list = swap(in_list, l_index, i-1)   #after the loop has sorted the array, swap with pivot into place
+    print("finish partition sub-routine")
 
     return i-1      # returns the index of the pivot for use in the quicksort recursion
 
@@ -141,73 +156,82 @@ def swap(in_list: List, index1: int, index2: int) -> List:
 
 def main():
     in_list = [3, 6, 7, 8, 11, 4, 5, 1, 9]
-    sorted_list = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     print(in_list)
-
-    count_first = quicksort(in_list, pivot_pick='first')
-    count_last = quicksort(in_list, pivot_pick='last')
-    count_median = quicksort(in_list, pivot_pick='median')
+    '''
+    pivot_index = partition(in_list, 0, len(in_list))
 
     print(in_list)
-    print(count_first)
-    print(count_last)
-    print(count_median)
+    print(pivot_index)
 
-    count_first_sort = quicksort(sorted_list, pivot_pick='last')
-    print(count_first_sort)
-    
-    with open('data_QuickSort.txt', 'r') as f:
-        data_list_first = [int(line.strip()) for line in f]
-    
-        print(data_list_first[:15])
-        print(f"data list len: {len(data_list_first)}")
+    pivot_index_left = partition(in_list, 0, pivot_index)
 
-        data_count_first = quicksort(data_list_first, pivot_pick='first')
-        print(data_list_first[:15])
-        print(f"the first count is: {data_count_first}")
+    print(in_list)
+    print(pivot_index_left)
 
-        assert data_list_first  == [x for x in range(1, 10001)]
-        assert data_count_first == 162085
-    
+    pivot_index_right= partition(in_list, pivot_index+1, len(in_list))
 
-    with open('data_QuickSort.txt', 'r') as f:
-        data_list_last = [int(line.strip()) for line in f]
-    
-        print(data_list_last[:15])
-        print(f"data last len: {len(data_list_last)}")
-
-        data_count_last = quicksort(data_list_last, pivot_pick='last')
-        print(data_list_last[:15])
-        print(f"the last count is: {data_count_last}")
-
-        assert data_list_last  == [x for x in range(1, 10001)]
-        assert data_count_last == 164123
+    print(in_list)
+    print(pivot_index_right)
+    '''
+    count = quicksort(in_list, pivot_pick='median')
+    print(in_list)
+    print(f"final count is: {count}")
 
 
-    with open('data_QuickSort.txt', 'r') as f:
-        data_list_median = [int(line.strip()) for line in f]
-    
-        print(data_list_median[:15])
-        print(f"data median len: {len(data_list_median)}")
+    """
+    n = len(in_list)
 
-        data_count_median = quicksort(data_list_median, pivot_pick='median')
-        print(data_list_median[:15])
-        print(f"the median count is: {data_count_median}")
-        
-        assert data_list_median  == [x for x in range(1, 10001)]
-        assert data_count_median == 138382
+    print(in_list)
 
+    # sortlist = QuickSort(in_list)
 
-    #data_count_last= quicksort(data_list_last, pivot_pick='last')
-    #data_count_median = quicksort(data_list_first, pivot_pick='median')
+    # testing length object
+    print(f"the list length is: {len(in_list)}")
 
-    
-    # print(f"the last count is: {data_count_last}")
-    # print(f"the median count is: {data_count_median}")
- 
+    # testing the swap method
+    print('\ntesting the swap method')
+    in_list = swap(in_list, 0, 2)
+    print(in_list)
 
-    
+    in_list = swap(in_list, 0, n-1)
+    print(in_list)
+
+    in_list = swap(in_list, 3, 5)
+    print(in_list)
+
+    in_list = swap(in_list, 4, 5)
+    print(in_list)
+
+    # testing quicksort method
+    print('\ntesting the quicksort method')
+    in_list = quicksort(in_list, pivot_pick = 'first')
+    print(in_list)
+
+    in_list = quicksort(in_list, pivot_pick = 'last')
+    print(in_list)
+
+    in_list = quicksort(in_list, pivot_pick = 'median')
+    print(in_list)
+
+    # testing partition method
+    print('\ntesting the partition method')
+    in_list, _ = partition(in_list, 0, n-1)
+    print(in_list)
+    """
 
 
 
 if __name__ == "__main__": main()
+
+"""SCRATCH
+
+        # both indicies below begin at one because the 0-th element in the array is the pivot
+        i = 1       # index between which the lists are going to be split along the pivot.
+        j = 1       # the index that signifies what portion of the array has been searched over
+
+        while j < self.length:
+            
+            
+            j += 1      # increment j for the next pass of the loop
+
+"""
