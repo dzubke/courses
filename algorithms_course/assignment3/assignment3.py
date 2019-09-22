@@ -53,7 +53,7 @@ class QuickSort():
                 pass                        # then set the pivot as the first element
 
             elif pivot_pick == 'last':          # if the pivot memthod is 'last'
-                self.swap(l_index, r_index-1)            # then set the pivot as the last element
+                self._swap(l_index, r_index-1)            # then set the pivot as the last element
 
             elif pivot_pick =='median':                            # if the pivot choosing method is 'median-of-three'
                 # the pivot will be the median of the first, middle, and last elements
@@ -65,10 +65,10 @@ class QuickSort():
                     pass        # don't do anything because the median is already in the l_index position
 
                 elif median_pivot == self.list[ median_index_org ]:       # if the median in the original list was picked
-                    self.swap(l_index, median_index_org)  # swap it with the first element
+                    self._swap(l_index, median_index_org)  # swap it with the first element
 
                 elif median_pivot == self.list[ r_index-1 ]:              # if the last element of the list was picked
-                    self.swap(l_index, r_index - 1 )      # swap it with the first element
+                    self._swap(l_index, r_index - 1 )      # sswap it with the first element
 
             else:   # if pivot_pick is not equal to 'first', 'last', or 'median-of-three' raise the ValueError
                 raise ValueError("invalid entry for pivot_pick argument. Valid entries are 1) 'first', 2) 'last', or 3) 'median'")
@@ -124,16 +124,16 @@ class QuickSort():
         for j in range(i, r_index):
             
             if self.list[j] < pivot:     # if the j-th element is less than the pivot 
-                self.swap(i, j)          # swap the i-th element with the j-th element since i is boundary index and the i-th element is greater than the pivot
+                self._swap(i, j)          # sswap the i-th element with the j-th element since i is boundary index and the i-th element is greater than the pivot
                 i += 1                   # increment i
 
-        self.swap(l_index, i-1)   #after the loop has sorted the array, swap with pivot into place
+        self._swap(l_index, i-1)   #after the loop has sorted the array, _swap with pivot into place
 
         return i-1      # returns the index of the pivot for use in the quicksort recursion
 
 
-    def swap(self, index1: int, index2: int):
-        """This method will swap the elements in index1 and index2.
+    def _swap(self, index1: int, index2: int):
+        """This private method will swap the elements in index1 and index2.
        
         Parameters
         ----------
@@ -163,13 +163,13 @@ def main():
 
     # testing the swap method
     print('\ntesting the swap method')
-    sortlist.swap(0, 2)
+    sortlist._swap(0, 2)
     print(sortlist.list)
 
-    sortlist.swap(0, sortlist.length-1)
+    sortlist._swap(0, sortlist.length-1)
     print(sortlist.list)
 
-    sortlist.swap(3, 5)
+    sortlist._swap(3, 5)
     print(sortlist.list)
 
     # testing quicksort method

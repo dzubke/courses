@@ -1,0 +1,33 @@
+The following problems are for those of you looking to challenge yourself beyond the required problem sets and programming questions. Most of these have been given in Stanford's CS161 course, Design and Analysis of Algorithms, at some point. They are completely optional and will not be graded. While they vary in level, many are pretty challenging, and we strongly encourage you to discuss ideas and approaches with your fellow students on the "Theory Problems" discussion form.
+
+1) Prove that the worst-case expected running time of every randomized comparison-based sorting algorithm is Ω(nlogn). (Here the worst-case is over inputs, and the expectation is over the random coin flips made by the algorithm.)
+
+2) Suppose we modify the deterministic linear-time selection algorithm by grouping the elements into groups of 7, rather than groups of 5. (Use the "median-of-medians" as the pivot, as before.) Does the algorithm still run in O(n)O(n) time? What if we use groups of 3?
+3) Given an array of nn distinct (but unsorted) elements x_1,x_2,\ldots,x_nx 
+1
+​	 ,x 
+2
+​	 ,…,x 
+n
+​	  with positive weights w_1,w_2,\ldots,w_nw 
+1
+​	 ,w 
+2
+​	 ,…,w 
+n
+​	  such that \sum_{i=1}^n w_i = W∑ 
+i=1
+n
+​	 w 
+i
+​	 =W, a weighted median is an element x_kx 
+k
+​	  for which the total weight of all elements with value less than x_kx 
+k
+​	  (i.e., ∑xi<xkwi) is at most W/2W/2, and also the total weight of elements with value larger than x_kx 
+k
+​	  (i.e., ∑xi>xkwi) is at most W/2W/2. Observe that there are at most two weighted medians. Show how to compute all weighted medians in O(n)O(n) worst-case time.
+
+
+4) We showed in an optional video lecture that every undirected graph has only polynomially (in the number nn of vertices) different minimum cuts. Is this also true for directed graphs? Prove it or give a counterexample.
+5) For a parameter \alpha \ge 1α≥1, an \alphaα-minimum cut is one for which the number of crossing edges is at most \alphaα times that of a minimum cut. How many \alphaα-minimum cuts can an undirected graph have, as a function of \alphaα and the number nn of vertices? Prove the best upper bound that you can.
