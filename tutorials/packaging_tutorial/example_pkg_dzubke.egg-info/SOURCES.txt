@@ -1,0 +1,7 @@
+README.md
+setup.py
+example_package/__init__.py
+example_pkg_dzubke.egg-info/PKG-INFO
+example_pkg_dzubke.egg-info/SOURCES.txt
+example_pkg_dzubke.egg-info/dependency_links.txt
+example_pkg_dzubke.egg-info/top_level.txt

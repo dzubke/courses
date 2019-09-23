@@ -74,17 +74,6 @@ class RandomCut():
 
         for row in graph_list:
             self.graph[row[0]].extend(row[1:])
-        
-
-
-        #self.graph_backup: DefaultDict[int, List[int]] = defaultdict(list)
-        #self.graph_backup  = self.graph.copy()      # {26: [6, 6, 6], 45: [4, 4, 4]}
-
-    def reinitialize(self):
-        """This function re-initializes the self.graph object using the self.graph_backup"""
-
-        # self.graph = self.graph_backup.copy()
-
 
     def random_cutHelper(self):
         """This helper function to the random_cut algorithm will perform the selection and contraction
@@ -238,7 +227,6 @@ def main():
 
     cutgraph = RandomCut(in_graph)
     print(f"original graph: {cutgraph.graph}")
-    # print(f"backup graph: {cutgraph.graph_backup}")
     print([i for i in cutgraph.graph])
     print(len(cutgraph.graph))
     
@@ -282,9 +270,6 @@ def main():
 
     cutgraph.random_cutHelper()
     print(f"contracted graph: {cutgraph.graph}")
-    # cutgraph.reinitialize()
-    # print(f"backup graph: {cutgraph.graph_backup}")
-    print(f"re-initialized graph: {cutgraph.graph}")
 
 
     # testing the random_cut algorithm
