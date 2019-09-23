@@ -1,4 +1,5 @@
-# assignment4.py
+# assignment4_scratch.py
+# this file is identical to assignment4.py except it has many print statements for de-bugging purposes
 
 # standard libraries
 from collections import defaultdict
@@ -26,23 +27,30 @@ def random_cut(graph_list):
 
     """
     
-    cutgraph = RandomCut(graph_list)
+    # cutgraph = RandomCut(graph_list)
     
-    n = len(cutgraph.graph)
+    # n = len(cutgraph.graph)
 
-    iterations: int = ceil( n * log(n) )  # the min number of iterations of the random_cutHelper must be run to ensure the minimum cut is returned
+    # iterations: int = ceil( n**2 * log(n) )  # the min number of iterations of the random_cutHelper must be run to ensure a minimum cut is returned
 
     min_cut: int = float('inf')       # the number of edges cut through the minimum cut, set to positive infinity
 
     for i in range(100):
-        
+        print(f"iteration {i}")
+
+        print(f"RandomCut begins")
         cutgraph = RandomCut(graph_list)        # the graph need to be re-instantiated because the random_cutHelper will reduce the graph to only 2-vertices
+        print(f"RandomCut ends/ random_cutHelper begins")
 
         cutgraph._del_selfloops()
         temp_min_cut = cutgraph.random_cutHelper()      # performs a min_cut on the graph
+        print(f"randomcut_helper ends/ if statement begins")
 
         if temp_min_cut < min_cut:
             min_cut = temp_min_cut
+        print(f"if statement ends")
+
+
 
     return min_cut
 
@@ -69,12 +77,16 @@ class RandomCut():
             the key node is connected to (or where this is an edge between)
 
         """
+        print("***initializing-mark1")
         # initializing the graph structure
         self.graph: DefaultDict[int, List[int]] = defaultdict(list)
+        print("***initializing-mark2")
 
         for row in graph_list:
             self.graph[row[0]].extend(row[1:])
+            print("***initializing-mark3")
         
+        print("***initializing-mark4")
 
 
         #self.graph_backup: DefaultDict[int, List[int]] = defaultdict(list)
@@ -83,31 +95,44 @@ class RandomCut():
     def reinitialize(self):
         """This function re-initializes the self.graph object using the self.graph_backup"""
 
-        # self.graph = self.graph_backup.copy()
+        self.graph = self.graph_backup.copy()
 
 
     def random_cutHelper(self):
         """This helper function to the random_cut algorithm will perform the selection and contraction
         """
 
+        print(f"while loop begins")
         while len(self.graph) > 2:
         # for i in range(2):
             # print(f"iteration {i} graph: {self.graph}")
             # randomly pick an edge (defined by two connected nodes, node1 and node2) to be contracted
+            print(f"nodes_pick() begins")
             node1, node2 = self.nodes_pick()
             # print(f"picked nodes: {node1}, {node2}")
+            print(f"nodes_pick() ends/ contract() begins")
 
             # merge/contract node1 and node2 into a single node
             self.contract(node1, node2)
+            print(f"contract() ends/ ")
+
+        
+        print(f"while loop ends/ count_list enstatiated")
 
         # count the number of edges in the final cut 
         count_list = []     # count_list is a list with two element which are the number of edges for the two nodes in the final 2-node graph
         
+        print(f"for loop begins")
+
         for node in self.graph:
             count_list.append(len(self.graph[node]))
         
+        print(f"for loop ends / assert begins")
+
         # each remaining node should have the same number of edges
         assert count_list[0] == count_list[1], "2 nodes have different number of edges"
+
+        print(f" assert ends / return begins")
 
 
         return count_list[0]    # returns the number of edges from the first node, which will be the number of cut edges in this running of random_cutHelper
@@ -167,37 +192,52 @@ class RandomCut():
 
         """
 
+        print(f"_replace begins")
         # step 1: replace all of the node2 values in the edge lists of the other nodes with the node1 value
         self._replace(node1, node2)
 
+        print(f"_replace ends/ _add begins")
         # step 2: add the nodes in the node2 edge list to the edge list of node1
         self._add(node1, node2)
 
+        print(f"_add ends / _del_selfloops begins")
         # step 3: remove self-loops
         self._del_selfloops()
+
+        print(f"_del_selfloops ends / delete node begins")
+
 
         # step 4: delete node2 from the graph
         del self.graph[node2]
 
+        print(f"delete node ends")
 
 
     
     def _replace(self, node1:int, node2: int):
-        """a private routine of the contract method where all the values of key2 in the graph defaultdict are replaced by the key1 value
+        """a private routine of the contract method where all the values of node2 in the graph defaultdict are replaced by the node1 value
         """
+        print(f"for loop begins")
         for key in self.graph:
             for index, value in enumerate(self.graph[key]):
+                print(f"for loop ends/ while loop begins")
                 if value == node2:
                     self.graph[key][index] = node1
-            
-            '''
-            while node2 in self.graph[key]:
-                # instead of reassigning the value of the list where node2 resides, I am deleting the node2 from the list and adding the node1 value
 
-                # self.graph[key] = [value for value in self.graph if  != node2] 
-                self.graph[key].remove(node2)       # deletes the node2 value from the row
-                self.graph[key].append(node1)       # adds the node1 value 
-            '''
+                # while node2 in self.graph[key]:
+                    # instead of reassigning the value of the list where node2 resides, I am deleting the node2 from the list and adding the node1 value
+        
+                # print(f"remove() begins: {self.graph[key]}")
+
+                # self.graph[key] = [value for value in self.graph[key] if value != node2] 
+                # self.graph[key].remove(node2)       # deletes the node2 value from the row
+
+                # print(f"remove() ends/ append() begins  | node2: {node2}, len: {len(self.graph[key])}, graph: {self.graph[key]}")
+
+                # self.graph[key].append(node1)       # adds the node1 value 
+                print(f"inner for ends | node1: {node1}, node2: {node2}, len: {len(self.graph[key])}, graph: {self.graph[key]}")
+
+
 
 
     def _add(self, node1: int, node2: int):
@@ -309,7 +349,7 @@ def main():
         print(graph_list)
     
         min_cut = random_cut(graph_list)
-        print(f"YOU DID IT! min cut: {min_cut}")
+        print(f"YOU DID IT! {min_cut}")
     
 
 
