@@ -1,0 +1,34 @@
+
+Normally, I will keep a daily log of the work I am doing on a project. I didn't do this for the assignments in course 1 of the algorithm's specialization,
+but I wanted to jot down a few notes about challenges I encountered when doing assignment3 (quicksort) and assignment4 (Krager's min-cut). 
+
+Assignment3
+------------
+I got some help from someone's implementation of the quicksort algorithm in the form of using a helper function that would run instead of the quicksort algorithm. 
+The helper function did most of the work of quicksort, while the actual quicksort method only called the helper function on the entire input list. This was
+helpful because quicksort is called on a single list, while the helper function made two recursive calls on each part of the paritiioned list.
+
+I also came to appreciate the importance of testing individual methods to ensure they are working properly. My element picking method didn't work initially, but
+I didn't run any tests on it (because it wasn't its own method) and so I only learned it didn't work much later. 
+
+I found creating a class object for the quicksort algorithm made things easier when counting the number of comparisons and general operations on the lists. 
+
+
+Assignment4
+------------ 
+I wrote a _replace private method that would replace one element of a list (node2) with another integer (node1). I did this by first removing node2 from the 
+list and then appending node1 to the list. I put these two commands, remove and append, inside a loop while node2 existed in the list. This would, I thought, 
+do a 1-1 replacement of node2 with node1. However, for a reason I didn't figure out, the while loop would run continuously. This was cause by two separate issues
+1) the first was when node1 and node2 took on the same integer value, so the method would remove node 2 from the list and then append the value of node2 back 
+onto the list. Unsurprisingly, this created an infinite loop. I corrected this by ensuring the delete self-loops (where a node had itself in its list of connected edges) 
+method ran at the beginning of every iteration of the random_cut() method. 
+
+A bigger picture change I made was how I deleted elements from a list. Initially, I used the list.remove() method instead of a while loop. This created challenges
+such as infinite loops as described in the issue 1) above. Instead of this, I started using this list comprehension:  [value for value in list if value != node2]
+I used this list comprehension in the _del_selfloop() method as well as the _replace() method. 
+
+Another strange lesson I learned had to do with elements and assignment in Class structures. I don't think I have a great handle on assignment in data structures
+because when I would two separate attributes of the class structure, when modifications were performed to one of the objects, the other object was also modified. 
+I don't know what was responsible for such spooky behavior. In the end, I didn't need to implement this second attribute because of the error was in the infinite loop
+of the _replace function instead of the enstantiation of the graph class object. 
+
