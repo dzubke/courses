@@ -13,3 +13,13 @@ whose sizes are 400, 300, and 100, then your answer should be "400,300,100,0,0" 
 WARNING: This is the most challenging programming assignment of the course. Because of the size of the graph you may have to manage memory carefully. 
 The best way to do this depends on your programming language and environment, and we strongly suggest that you exchange tips for doing this on the 
 discussion forums.
+
+
+
+Progress log
+
+20191008
+ - this isn't a complete log of my work on this assignment, but I wanted to note a sumbling block. I have structured the data structures like v_explored l_node assuming
+    every node would have a value in the dictionary, but that isn't always the case. In graphical terms, this means, that some nodes are not the tail of an edge
+ - instead of being lists, I will change the v_explored, l_node, etc to be dictionaries. I reduce the duplication of indicies, I'm going to make a seperate dictionary
+    that contains v_explored, l_node, etc as list elements
